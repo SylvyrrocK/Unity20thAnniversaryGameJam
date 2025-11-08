@@ -1,5 +1,6 @@
+using System;
+using System.Collections.Generic;
 using DG.Tweening;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -7,27 +8,24 @@ using UpgradeSystem.Interfaces;
 
 public class PlayerController : MonoBehaviour, IDamageable
 {
-    [SerializeField] private Rigidbody2D playerRb;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private int maxHealth = 3;
-    [SerializeField] private float invincibilityTimer = 2f;
 
-    [Header("Directional Sprites")]
-    [SerializeField] Sprite downSprite;
+    [Header("Directional Sprites")] [SerializeField]
+    Sprite downSprite;
+
     [SerializeField] Sprite upSprite;
     [SerializeField] Sprite leftSprite;
     [SerializeField] Sprite rightSprite;
 
+    [Header("Bomb Settings")] [SerializeField]
+    private GameObject bombPrefab;
+    
+    [SerializeField] private int maxBombs = 1;
+    [SerializeField] private LayerMask obstacleLayerMask;
+
     private SpriteRenderer spriteRenderer;
-
-    [Header("Damage indicator")]
-    Color _originalColor;
-    float flashTimer = 2f;
-    float intensity = 5f;
-    float duration = 0.5f;
-
-    Vector3 _originalScale;
-    Vector3 _scaleTo;
+    private Rigidbody2D playerRb;
 
     [Header("UI Elements")]
     [SerializeField] Image[] hearts;
@@ -39,23 +37,37 @@ public class PlayerController : MonoBehaviour, IDamageable
     private float _vertical;
     private int _currentHealth;
     private bool _isInvincible = false;
-    
+
+    private int _currentBombs = 0;
+    private bool _canPlaceBomb = true;
+    private Sequence _bombCooldownSequence;
+    private List<Tween> _activeBombMonitors = new List<Tween>();
+
     public event System.Action<int> OnHealthChanged;
     public event System.Action OnPlayerDeath;
-    
+    public event System.Action<int, int> OnBombCountChanged; //current, max
+
     void Start()
     {
         _currentHealth = maxHealth;
+        _currentBombs = 0;
+        OnBombCountChanged?.Invoke(_currentBombs, maxBombs);
     }
-    
+
     void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         playerRb = GetComponent<Rigidbody2D>();
+    }
 
-        _originalColor = spriteRenderer.material.color;
-        _originalScale = transform.localScale;
-        _scaleTo = _originalScale * 0.8f;
+    private void OnDestroy()
+    {
+        _bombCooldownSequence?.Kill();
+        foreach (var monitor in _activeBombMonitors)
+        {
+            monitor?.Kill();
+        }
+        _activeBombMonitors.Clear();
     }
 
     void FixedUpdate()
@@ -105,37 +117,58 @@ public class PlayerController : MonoBehaviour, IDamageable
         else if (playerRb.linearVelocityX > 0) spriteRenderer.sprite = rightSprite;
     }
 
-    public void OnAttack()
+    public void OnPlaceBomb(InputAction.CallbackContext context)
     {
-        
+        if (context.performed && _canPlaceBomb && _currentBombs < maxBombs)
+        {
+            TryPlaceBomb();
+        }
     }
+
+    private void TryPlaceBomb()
+    {
+        Vector2 bombPosition = GetGridPosition(transform.position);
+
+        if (!IsPositionClear(bombPosition))
+        {
+            Debug.Log("Cannot place bomb - position occupied");
+            return;
+        }
+
+        PlaceBomb(bombPosition);
+    }
+
+    private Vector2 GetGridPosition(Vector2 worldPosition)
+    {
+        return new Vector2(Mathf.Round(worldPosition.x), Mathf.Round(worldPosition.y));
+    }
+
+    private void PlaceBomb(Vector2 position)
+    {
+        GameObject bombObj = Instantiate(bombPrefab, position, Quaternion.identity);
+        Bomb bomb = bombObj.GetComponent<Bomb>();
     
+        bomb.OnExploded += (explodedBomb) => {
+            _currentBombs--;
+            OnBombCountChanged?.Invoke(_currentBombs, maxBombs);
+        };
+    
+        _currentBombs++;
+        OnBombCountChanged?.Invoke(_currentBombs, maxBombs);
+    }
+
+    private bool IsPositionClear(Vector2 position)
+    {
+        Collider2D hit = Physics2D.OverlapCircle(position, 0.4f, obstacleLayerMask);
+        return hit == null;
+    }
+
     public void TakeDamage(int damage)
     {
         if (!_isInvincible)
         {
-            _currentHealth -= damage;    
+            _currentHealth -= damage;
             OnHealthChanged?.Invoke(_currentHealth);
-
-            _isInvincible = true;
-
-            transform.DOScale(_scaleTo, flashTimer + 0.1f)
-                .SetEase(Ease.InOutSine)
-                .SetLoops(2, LoopType.Yoyo)
-                .OnComplete(() => transform.localScale = _originalScale);
-
-            spriteRenderer.DOColor(Color.red, flashTimer/4f + 0.1f)
-                    .SetLoops(4, LoopType.Yoyo)
-                    .OnComplete(() => spriteRenderer.color = _originalColor);
-
-            if(CameraShake.Instance != null)
-                CameraShake.Instance.Shake(intensity, duration);
-
-            DOVirtual.DelayedCall(invincibilityTimer, () => {
-                _isInvincible = false;
-
-                Debug.Log("This runs after: " + invincibilityTimer + " seconds!");
-            });
 
             if (_currentHealth <= 0)
             {
@@ -149,14 +182,15 @@ public class PlayerController : MonoBehaviour, IDamageable
         OnPlayerDeath?.Invoke();
         gameObject.SetActive(false);
     }
-    
-    
+
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent<Pickup>(out var pickup))
         {
             pickup.OnPickup(this);
-        } else if (collision.TryGetComponent<IDamageDealer>(out var damager))
+        }
+        else if (collision.TryGetComponent<IDamageDealer>(out var damager))
         {
             damager.ApplyDamage(this);
         }

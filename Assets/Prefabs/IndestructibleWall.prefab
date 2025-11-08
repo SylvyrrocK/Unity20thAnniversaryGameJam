@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4269160948970586277}
   - component: {fileID: 7213190281808135872}
   - component: {fileID: -4948012534462906070}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: IndestructibleWall
   m_TagString: Indestructible
   m_Icon: {fileID: 0}
