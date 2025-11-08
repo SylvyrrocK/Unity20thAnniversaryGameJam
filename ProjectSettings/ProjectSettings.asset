@@ -686,11 +686,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 1
   windowsGamepadBackendHint: 0
-  cloudProjectId: f0c0753f-c5fd-4a90-87b0-29808cd07b6c
+  cloudProjectId: 78e8e9be-3bdc-4719-96a0-383a36862a85
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: UnityProjectTransfer
-  organizationId: sylvyrrock
+  projectName: BombermanJam
+  organizationId: eugene-ivashin-as-publisher
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
