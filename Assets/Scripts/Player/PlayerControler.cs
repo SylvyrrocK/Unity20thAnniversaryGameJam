@@ -7,7 +7,15 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private Rigidbody2D playerRb;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private int maxHealth = 3;
-    
+
+    [Header("Directional Sprites")]
+    [SerializeField] Sprite downSprite;
+    [SerializeField] Sprite upSprite;
+    [SerializeField] Sprite leftSprite;
+    [SerializeField] Sprite rightSprite;
+
+    private SpriteRenderer spriteRenderer;
+
     private float _horizontal;
     private float _vertical;
     private int _currentHealth;
@@ -23,19 +31,29 @@ public class PlayerController : MonoBehaviour, IDamageable
     
     void Awake()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         playerRb = GetComponent<Rigidbody2D>();
-
     }
 
     void FixedUpdate()
     {
         playerRb.linearVelocity = new Vector2(_horizontal * moveSpeed, _vertical * moveSpeed);
+
+        UpdateSpriteDirection();
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
         _horizontal = context.ReadValue<Vector2>().x;
         _vertical = context.ReadValue<Vector2>().y;
+    }
+
+    void UpdateSpriteDirection()
+    {
+        if (playerRb.linearVelocityY > 0) spriteRenderer.sprite = upSprite;
+        else if (playerRb.linearVelocityY < 0) spriteRenderer.sprite = downSprite;
+        else if (playerRb.linearVelocityX < 0) spriteRenderer.sprite = leftSprite;
+        else if (playerRb.linearVelocityX > 0) spriteRenderer.sprite = rightSprite;
     }
 
     public void OnAttack()
