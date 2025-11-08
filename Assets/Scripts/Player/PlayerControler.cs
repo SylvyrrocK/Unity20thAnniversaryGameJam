@@ -1,3 +1,5 @@
+using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -8,6 +10,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private Rigidbody2D playerRb;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private int maxHealth = 3;
+    [SerializeField] private float invincibilityTimer = 2f;
 
     [Header("Directional Sprites")]
     [SerializeField] Sprite downSprite;
@@ -16,6 +19,15 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] Sprite rightSprite;
 
     private SpriteRenderer spriteRenderer;
+
+    [Header("Damage indicator")]
+    Color _originalColor;
+    float flashTimer = 2f;
+    float intensity = 5f;
+    float duration = 0.5f;
+
+    Vector3 _originalScale;
+    Vector3 _scaleTo;
 
     [Header("UI Elements")]
     [SerializeField] Image[] hearts;
@@ -40,6 +52,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         playerRb = GetComponent<Rigidbody2D>();
+
+        _originalColor = spriteRenderer.material.color;
+        _originalScale = transform.localScale;
+        _scaleTo = _originalScale * 0.8f;
     }
 
     void FixedUpdate()
@@ -100,6 +116,26 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             _currentHealth -= damage;    
             OnHealthChanged?.Invoke(_currentHealth);
+
+            _isInvincible = true;
+
+            transform.DOScale(_scaleTo, flashTimer + 0.1f)
+                .SetEase(Ease.InOutSine)
+                .SetLoops(2, LoopType.Yoyo)
+                .OnComplete(() => transform.localScale = _originalScale);
+
+            spriteRenderer.DOColor(Color.red, flashTimer/4f + 0.1f)
+                    .SetLoops(4, LoopType.Yoyo)
+                    .OnComplete(() => spriteRenderer.color = _originalColor);
+
+            if(CameraShake.Instance != null)
+                CameraShake.Instance.Shake(intensity, duration);
+
+            DOVirtual.DelayedCall(invincibilityTimer, () => {
+                _isInvincible = false;
+
+                Debug.Log("This runs after: " + invincibilityTimer + " seconds!");
+            });
 
             if (_currentHealth <= 0)
             {
