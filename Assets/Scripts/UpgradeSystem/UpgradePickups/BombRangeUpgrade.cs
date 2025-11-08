@@ -1,8 +1,9 @@
+using UnityEngine;
 using UpgradeSystem.Interfaces;
 
-public class BombRangeUpgrade : Pickup
+public class BombRangeUpgrade : MonoBehaviour, Pickup
 {
-    public override void Interact(PlayerController player)
+    public void OnPickup(PlayerController player)
     {
         PlayerUpgradeManager.Instance.AddRange();
         Destroy(this);
