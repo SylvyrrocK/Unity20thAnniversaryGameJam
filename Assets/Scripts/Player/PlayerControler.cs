@@ -4,32 +4,30 @@ using UpgradeSystem.Interfaces;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField]
-    private float moveSpeed = 1f;
+    [SerializeField] Rigidbody2D playerRb;
 
-    [SerializeField] private PlayerInput playerInput;
-    
-    private Rigidbody2D playerRb;
-    private Vector2 inputVector;
-    private Vector2 movementVector;
-    
-    InputAction moveAction;
-    
-    void Start()
+    [SerializeField] float moveSpeed = 5f;
+
+    private float horizontal;
+    private float vertical;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Awake()
     {
-        playerRb = GetComponent<Rigidbody2D>();    
+        playerRb = GetComponent<Rigidbody2D>();
+
     }
 
-    public void OnMove(Object test)
-    {
-        Debug.Log(test);
-        //inputVector = context.ReadValue<Vector2>();
-        //movementVector = inputVector * moveSpeed;
-    }
-    
     void FixedUpdate()
     {
-        playerRb.linearVelocity = movementVector;
+        playerRb.linearVelocity = new Vector2(horizontal * moveSpeed, vertical * moveSpeed);
+    }
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        Debug.Log("Move action performed");
+        horizontal = context.ReadValue<Vector2>().x;
+        vertical = context.ReadValue<Vector2>().y;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
