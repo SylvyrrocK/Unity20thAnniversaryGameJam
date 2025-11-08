@@ -5,16 +5,14 @@ using UpgradeSystem.Interfaces;
 
 public class Explosion : MonoBehaviour, IDamageDealer
 {
-    [Header("Sprites")]
-    [SerializeField] private Sprite _centerSprite;
+    [Header("Sprites")] [SerializeField] private Sprite _centerSprite;
     [SerializeField] private Sprite _sideSprite;
     [SerializeField] private Sprite _endSprite;
-    
-    [Header("Settings")]
-    [SerializeField] private float timeToLive = 1f;
+
+    [Header("Settings")] [SerializeField] private float timeToLive = 1f;
 
     private int _explosionDamage = 0;
-    
+
     private SpriteRenderer _spriteRenderer;
 
     private void Awake()
@@ -29,6 +27,11 @@ public class Explosion : MonoBehaviour, IDamageDealer
         _explosionDamage = damage;
         Destroy(gameObject, timeToLive);
     }
+
+    public void ApplyDamage(IDamageable damageable)
+    {
+        damageable.TakeDamage(_explosionDamage);
+    }
     
     private void SetSprite(ExplosionType explosionType)
     {
@@ -40,21 +43,32 @@ public class Explosion : MonoBehaviour, IDamageDealer
             _ => _spriteRenderer.sprite
         };
     }
-    
-    private void SetRotation(ExplosionType explosionType, Vector2 direction)
+
+    private void SetRotation(ExplosionType type, Vector2 direction)
     {
-        if (explosionType is ExplosionType.End or ExplosionType.Side)
+        float angle = 0f;
+        
+        switch (type)
         {
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0, 0, angle);
+            case ExplosionType.Center:
+                angle = 0f;
+                break;
+                
+            case ExplosionType.Side:
+                if (direction == Vector2.up || direction == Vector2.down)
+                    angle = 0f;
+                else
+                    angle = 90f;
+                break;
+                
+            case ExplosionType.End:
+                if (direction == Vector2.up) angle = 0f;
+                else if (direction == Vector2.down) angle = 180f;  
+                else if (direction == Vector2.left) angle = 90f; 
+                else if (direction == Vector2.right) angle = -90f;
+                break;
         }
-        else
-        {
-            transform.rotation = Quaternion.identity;
-        }
-    }
-    public void ApplyDamage(IDamageable damageable)
-    {
-        damageable.TakeDamage(_explosionDamage);
+        
+        transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 }

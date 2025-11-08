@@ -57,10 +57,19 @@ public class Bomb : MonoBehaviour
                 break;
             }
             
-
-            ExplosionType type = GetExplosionTypeForPosition(i, direction);
-            CreateExplosion(explosionPos, type, direction);
+            ExplosionType explosionType = GetExplosionTypeForPosition(i, direction);
+            CreateExplosion(explosionPos, explosionType, direction);
         }
+    }
+    
+    private ExplosionType GetExplosionTypeForPosition(int distance, Vector2 direction)
+    {
+        if (distance == _explosionRadius)
+        {
+            return ExplosionType.End;
+        }
+        
+        return ExplosionType.Side;
     }
     
     private void CreateExplosion(Vector2 position, ExplosionType type, Vector2 direction = default)
