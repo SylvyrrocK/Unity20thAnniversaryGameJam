@@ -25,7 +25,6 @@ public class PlayerController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        Debug.Log("Move action performed");
         horizontal = context.ReadValue<Vector2>().x;
         vertical = context.ReadValue<Vector2>().y;
     }
