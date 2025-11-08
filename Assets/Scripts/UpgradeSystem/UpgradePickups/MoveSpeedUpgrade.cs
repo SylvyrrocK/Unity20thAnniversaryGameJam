@@ -1,8 +1,9 @@
+using UnityEngine;
 using UpgradeSystem.Interfaces;
 
-public class MoveSpeedUpgrade : Pickup
+public class MoveSpeedUpgrade : MonoBehaviour, Pickup
 {
-    public override void Interact(PlayerController player)
+    public void OnPickup(PlayerController player)
     {
         PlayerUpgradeManager.Instance.AddSpeedBoost(0.25f);
         Destroy(this);
