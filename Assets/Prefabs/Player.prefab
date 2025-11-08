@@ -143,6 +143,15 @@ MonoBehaviour:
   upSprite: {fileID: -7506843205370739377, guid: ece296b01b3a51d419b2da110688e526, type: 3}
   leftSprite: {fileID: -5515171930948586337, guid: ece296b01b3a51d419b2da110688e526, type: 3}
   rightSprite: {fileID: 1057077476486816784, guid: ece296b01b3a51d419b2da110688e526, type: 3}
+  hearts:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  fullHeart: {fileID: 21300000, guid: 2534bb8fa5b9648488015b9da1476b34, type: 3}
+  emptyHeart: {fileID: 21300000, guid: 6b35fb249fb46c946a8aaf0459269974, type: 3}
 --- !u!114 &8244228266159692348
 MonoBehaviour:
   m_ObjectHideFlags: 0

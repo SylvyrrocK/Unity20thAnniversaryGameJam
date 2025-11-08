@@ -150,5 +150,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f915c77e1cdb0b4089b22299029ecee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DestructibleWall
-  health: 3
+  health: 1
   destroyEffect: {fileID: 1216486439801903202, guid: f5a891d02e496024281f2ec804e26502, type: 3}

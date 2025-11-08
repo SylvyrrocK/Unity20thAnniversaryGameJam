@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using UpgradeSystem.Interfaces;
 
 public class PlayerController : MonoBehaviour, IDamageable
@@ -15,6 +16,12 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] Sprite rightSprite;
 
     private SpriteRenderer spriteRenderer;
+
+    [Header("UI Elements")]
+    [SerializeField] Image[] hearts;
+    [SerializeField] Sprite fullHeart;
+    [SerializeField] Sprite emptyHeart;
+    //[SerializeField] Sprite halfHeart;
 
     private float _horizontal;
     private float _vertical;
@@ -38,6 +45,32 @@ public class PlayerController : MonoBehaviour, IDamageable
     void FixedUpdate()
     {
         playerRb.linearVelocity = new Vector2(_horizontal * moveSpeed, _vertical * moveSpeed);
+
+        for (int i = 0; i < hearts.Length; i++)
+        {
+            if (i < Mathf.FloorToInt(_currentHealth))
+            {
+                hearts[i].sprite = fullHeart;
+            }
+            //else if (i < _currentHealth)
+            //{
+            //    hearts[i].sprite = halfHeart;
+            //}
+            else
+            {
+                hearts[i].sprite = emptyHeart;
+            }
+            hearts[i].enabled = i < Mathf.CeilToInt(maxHealth);
+
+            if (i < Mathf.FloorToInt(maxHealth))
+            {
+                hearts[i].enabled = true;
+            }
+            else
+            {
+                hearts[i].enabled = false;
+            }
+        }
 
         UpdateSpriteDirection();
     }
