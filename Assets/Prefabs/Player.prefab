@@ -136,13 +136,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae77d9884507cef4a9cf553e65833f9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  playerRb: {fileID: 0}
   moveSpeed: 5
   maxHealth: 3
   downSprite: {fileID: 1947896252910339220, guid: ece296b01b3a51d419b2da110688e526, type: 3}
   upSprite: {fileID: -7506843205370739377, guid: ece296b01b3a51d419b2da110688e526, type: 3}
   leftSprite: {fileID: -5515171930948586337, guid: ece296b01b3a51d419b2da110688e526, type: 3}
   rightSprite: {fileID: 1057077476486816784, guid: ece296b01b3a51d419b2da110688e526, type: 3}
+  bombPrefab: {fileID: 7649149635513665329, guid: b819eddb6ba8e854e9a3c059bbce458d, type: 3}
+  bombCooldown: 2
+  maxBombs: 1
+  obstacleLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!114 &8244228266159692348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,7 +194,19 @@ MonoBehaviour:
     m_ActionId: 6b444451-8a00-4d00-a97e-f47457f736a8
     m_ActionName: 'Player/Look[/Mouse/delta]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 575851792227296592}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnPlaceBomb
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 6c2ab1b8-8984-453a-af3d-a3c78ae1679a
     m_ActionName: 'Player/Attack[/Mouse/leftButton,/Keyboard/enter]'
   - m_PersistentCalls:

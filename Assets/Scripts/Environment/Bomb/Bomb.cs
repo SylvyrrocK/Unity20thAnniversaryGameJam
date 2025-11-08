@@ -12,12 +12,21 @@ public class Bomb : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] private GameObject explosionPrefab;
     
+    public event System.Action<Bomb> OnExploded;
+    
+    private BoxCollider2D bombCollider;
     private float _explosionDelay;
     private int _explosionRadius;
     private int _damage;
+
+    private void Awake()
+    {
+        bombCollider = GetComponent<BoxCollider2D>();
+    }
     
     private void Start()
     {
+        bombCollider.isTrigger = true;
         Initialize(defaultExplosionDelay, defaultExplosionRadius, defaultDamage);
     }
     
@@ -37,6 +46,7 @@ public class Bomb : MonoBehaviour
     
     private void Explode()
     {
+        OnExploded?.Invoke(this);
         CreateExplosion(transform.position, ExplosionType.Center);
         CreateExplosionLine(Vector2.down);
         CreateExplosionLine(Vector2.left);
@@ -90,5 +100,13 @@ public class Bomb : MonoBehaviour
         }
         
         return false;
+    }
+    
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            bombCollider.isTrigger = false;
+        }
     }
 }
