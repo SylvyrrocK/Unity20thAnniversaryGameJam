@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Environment.Bomb;
 using UnityEngine;
 using UpgradeSystem.Interfaces;
@@ -22,7 +23,6 @@ public class Explosion : MonoBehaviour, IDamageDealer
 
     private SpriteRenderer _spriteRenderer;
     private CircleCollider2D _circleCollider2D;
-    
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -36,14 +36,16 @@ public class Explosion : MonoBehaviour, IDamageDealer
         _explosionDamage = damage;
         
         ApplyDamageToSurroundings();
-        
+
+        _spriteRenderer.DOFade(0, timeToLive)
+            .SetEase(Ease.InQuad);
         Destroy(gameObject, timeToLive);
     }
 
     private void ApplyDamageToSurroundings()
     {
         Vector2 circleCenter = GetCircleColliderCenter();
-        float radius = GetCircleColliderRadius();
+        float radius = GetCircleColliderRadius() * 0.8f;
         
         Collider2D[] hits = Physics2D.OverlapCircleAll(circleCenter, radius);
         

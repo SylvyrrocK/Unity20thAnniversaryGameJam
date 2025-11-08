@@ -6,6 +6,7 @@ public class BombRangeUpgrade : MonoBehaviour, Pickup
     public void OnPickup(PlayerController player)
     {
         PlayerUpgradeManager.Instance.AddRange();
-        Destroy(this);
+        Debug.Log("Upgraded range to " + PlayerUpgradeManager.Instance.GetExplosionRange);
+        Destroy(gameObject);
     }
 }

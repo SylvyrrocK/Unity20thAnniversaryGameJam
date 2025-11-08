@@ -27,7 +27,8 @@ public class Bomb : MonoBehaviour
     private void Start()
     {
         bombCollider.isTrigger = true;
-        Initialize(defaultExplosionDelay, defaultExplosionRadius, defaultDamage);
+        if (_explosionDelay == 0) 
+            Initialize(defaultExplosionDelay, defaultExplosionRadius, defaultDamage);
     }
     
     private void Initialize(float delay, int radius, int damage)
@@ -36,6 +37,13 @@ public class Bomb : MonoBehaviour
         _explosionRadius = radius;
         _damage = damage;
         StartCoroutine(ExplodeAfterDelay());
+    }
+
+    public void Initialize() => Initialize(defaultExplosionDelay, defaultExplosionRadius, defaultDamage);
+    
+    public void UpdateBombStats(int radius)
+    {
+        _explosionRadius = radius;
     }
     
     private IEnumerator ExplodeAfterDelay()
