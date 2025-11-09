@@ -21,7 +21,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     [Header("Bomb Settings")] [SerializeField]
     private GameObject bombPrefab;
     
-    [SerializeField] private int maxBombs = 1;
     [SerializeField] private LayerMask obstacleLayerMask;
 
     private SpriteRenderer spriteRenderer;
@@ -51,7 +50,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         _currentHealth = maxHealth;
         _currentBombs = 0;
-        OnBombCountChanged?.Invoke(_currentBombs, maxBombs);
+        OnBombCountChanged?.Invoke(_currentBombs, PlayerUpgradeManager.Instance.GetBombCount);
     }
 
     void Awake()
@@ -119,7 +118,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void OnPlaceBomb(InputAction.CallbackContext context)
     {
-        if (context.performed && _canPlaceBomb && _currentBombs < maxBombs)
+        if (context.performed && _canPlaceBomb && _currentBombs < PlayerUpgradeManager.Instance.GetBombCount)
         {
             TryPlaceBomb();
         }
@@ -140,21 +139,22 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private Vector2 GetGridPosition(Vector2 worldPosition)
     {
-        return new Vector2(Mathf.Round(worldPosition.x), Mathf.Round(worldPosition.y));
+        return new Vector2(Mathf.Round(worldPosition.x) - 0.5f, Mathf.Round(worldPosition.y) - 0.5f);
     }
 
     private void PlaceBomb(Vector2 position)
     {
         GameObject bombObj = Instantiate(bombPrefab, position, Quaternion.identity);
         Bomb bomb = bombObj.GetComponent<Bomb>();
-    
+        bomb.UpdateBombStats(PlayerUpgradeManager.Instance.GetExplosionRange);
+        
         bomb.OnExploded += (explodedBomb) => {
             _currentBombs--;
-            OnBombCountChanged?.Invoke(_currentBombs, maxBombs);
+            OnBombCountChanged?.Invoke(_currentBombs, PlayerUpgradeManager.Instance.GetBombCount);
         };
     
         _currentBombs++;
-        OnBombCountChanged?.Invoke(_currentBombs, maxBombs);
+        OnBombCountChanged?.Invoke(_currentBombs, PlayerUpgradeManager.Instance.GetBombCount);
     }
 
     private bool IsPositionClear(Vector2 position)
@@ -188,6 +188,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         if (collision.TryGetComponent<Pickup>(out var pickup))
         {
+            Debug.Log("Picked up pickup");
             pickup.OnPickup(this);
         }
         else if (collision.TryGetComponent<IDamageDealer>(out var damager))

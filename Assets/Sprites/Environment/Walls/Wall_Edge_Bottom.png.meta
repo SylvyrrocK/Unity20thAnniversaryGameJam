@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7776c0c6e6ffe144284bc0253048efa9
+guid: ba53df5fa7bc9f6418c78a64bdede25d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3132038613696105623
-    second: Walls_1 1_0
+      213: -3968857711414651059
+    second: WallsandTiles_3_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Walls_1 1_0
+      name: WallsandTiles_3_0
       rect:
         serializedVersion: 2
-        x: 10
+        x: 0
         y: 0
-        width: 6
-        height: 16
+        width: 16
+        height: 7
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 96336df9973c884d0800000000000000
-      internalID: -3132038613696105623
+      spriteID: d475f0b70f8cbe8c0800000000000000
+      internalID: -3968857711414651059
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Walls_1 1_0: -3132038613696105623
+      WallsandTiles_3_0: -3968857711414651059
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

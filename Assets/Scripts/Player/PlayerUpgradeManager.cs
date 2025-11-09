@@ -7,7 +7,7 @@ public class PlayerUpgradeManager : MonoBehaviour
     {
         get 
         {
-            if (_instance == null) 
+            if (!_instance) 
             {
                 _instance = FindFirstObjectByType<PlayerUpgradeManager>();
             }
