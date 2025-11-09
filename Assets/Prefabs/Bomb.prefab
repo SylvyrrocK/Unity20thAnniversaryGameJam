@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7903883353160926520}
   - component: {fileID: -1979596502407919653}
   - component: {fileID: 6742861618028366240}
+  - component: {fileID: 6285598502113996015}
   m_Layer: 6
   m_Name: Bomb
   m_TagString: Untagged
@@ -159,7 +160,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 5.12, y: 5.12}
+  m_Size: {x: 5, y: 5}
   m_EdgeRadius: 0
 --- !u!114 &6742861618028366240
 MonoBehaviour:
@@ -177,3 +178,19 @@ MonoBehaviour:
   defaultExplosionRadius: 1
   defaultDamage: 1
   explosionPrefab: {fileID: 9006474244143529768, guid: 04ccc4211a42af44480f82c08259852d, type: 3}
+--- !u!114 &6285598502113996015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7649149635513665329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 183748dd497aa473a98ff0cd8cb67fc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: AstarPathfindingProject::Pathfinding.DynamicGridObstacle
+  version: 1
+  uniqueID: 3591476251919742634
+  updateError: 1
+  checkTime: 0.2

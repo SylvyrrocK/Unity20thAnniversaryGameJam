@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 8244228266159692348}
   - component: {fileID: -6875691331448487508}
   - component: {fileID: 8965807515307889793}
-  - component: {fileID: 7028640347923866261}
   - component: {fileID: 1070718005912101542}
   m_Layer: 0
   m_Name: Player
@@ -85,8 +84,8 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
-  m_Sprite: {fileID: 1947896252910339220, guid: ece296b01b3a51d419b2da110688e526, type: 3}
+  m_SortingOrder: 2
+  m_Sprite: {fileID: -1980934997494277796, guid: 71ef356793dda174da0211ae894a2a0a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -139,15 +138,16 @@ MonoBehaviour:
   moveSpeed: 5
   maxHealth: 3
   invincibilityTimer: 2
-  downSprite: {fileID: 1947896252910339220, guid: ece296b01b3a51d419b2da110688e526, type: 3}
-  upSprite: {fileID: -7506843205370739377, guid: ece296b01b3a51d419b2da110688e526, type: 3}
-  leftSprite: {fileID: -5515171930948586337, guid: ece296b01b3a51d419b2da110688e526, type: 3}
-  rightSprite: {fileID: 1057077476486816784, guid: ece296b01b3a51d419b2da110688e526, type: 3}
+  downSprite: {fileID: -1980934997494277796, guid: 71ef356793dda174da0211ae894a2a0a, type: 3}
+  upSprite: {fileID: -2570007032685604813, guid: 9bcd0a93cea315c4f8452906bf297655, type: 3}
+  leftSprite: {fileID: -3412052404114788367, guid: 354f158b6d8d29a49a1bd968dc45f96b, type: 3}
+  rightSprite: {fileID: -2248524107860033323, guid: 7cb0ac0d2d8704b478c91f4a762df45c, type: 3}
   bombPrefab: {fileID: 7649149635513665329, guid: b819eddb6ba8e854e9a3c059bbce458d, type: 3}
   maxBombs: 1
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  damageSoundClips: []
   hearts:
   - {fileID: 0}
   - {fileID: 0}
@@ -315,43 +315,6 @@ MonoBehaviour:
   xMax: 8
   zMin: -8
   zMax: 7
---- !u!70 &7028640347923866261
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3504414366286289798}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.875, y: 1.0625}
-  m_Direction: 0
 --- !u!61 &1070718005912101542
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -386,15 +349,15 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.0038469434, y: -0.39729458}
+  m_Offset: {x: -0.0038469434, y: -0.45666182}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.875, y: 1.0625}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 0.875, y: 1.0625}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.6435033, y: 0.14903322}
+  m_Size: {x: 0.6435033, y: 0.10945511}
   m_EdgeRadius: 0
