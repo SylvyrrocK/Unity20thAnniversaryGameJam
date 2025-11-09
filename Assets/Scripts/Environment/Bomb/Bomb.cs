@@ -12,7 +12,7 @@ public class Bomb : MonoBehaviour
     
     [Header("Prefabs")]
     [SerializeField] private GameObject explosionPrefab;
-    
+    [SerializeField] private AudioClip[] damageSoundClips;
     public event System.Action<Bomb> OnExploded;
     
     private BoxCollider2D bombCollider;
@@ -69,6 +69,8 @@ public class Bomb : MonoBehaviour
     private void Explode()
     {
         OnExploded?.Invoke(this);
+
+        SoundFXManager.Instance.PlayRandomSoundFXClip(damageSoundClips, transform, 1f);
         CreateExplosion(transform.position, ExplosionType.Center);
         CreateExplosionLine(Vector2.down);
         CreateExplosionLine(Vector2.left);
