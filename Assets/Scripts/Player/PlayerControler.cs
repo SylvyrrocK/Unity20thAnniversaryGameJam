@@ -137,7 +137,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void OnPlaceBomb(InputAction.CallbackContext context)
     {
-        if (context.performed && _canPlaceBomb && _currentBombs < maxBombs)
+        if (context.performed && _canPlaceBomb && _currentBombs < PlayerUpgradeManager.Instance.GetBombCount)
         {
             TryPlaceBomb();
         }

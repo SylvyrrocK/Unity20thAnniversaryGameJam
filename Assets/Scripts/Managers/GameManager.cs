@@ -82,6 +82,7 @@ public class GameManager : MonoBehaviour
         
         UpdateWaveSystem();
         UpdatePortalSystem();
+        UpdateEnemyList();
     }
 
     private void UpdateWaveSystem()
@@ -119,6 +120,29 @@ public class GameManager : MonoBehaviour
         OnEnemiesCountChanged?.Invoke(activeEnemies.Count);
     }
     
+    private void UpdateEnemyList()
+    {
+        // Удаляем уничтоженных врагов из списка
+        int removedCount = activeEnemies.RemoveAll(enemy => enemy == null);
+        if (removedCount > 0)
+        {
+            Debug.Log($"Removed {removedCount} dead enemies. Active: {activeEnemies.Count}");
+            OnEnemiesCountChanged?.Invoke(activeEnemies.Count);
+        }
+    }
+    
+    public void OnEnemyDied(GameObject enemy)
+    {
+        if (activeEnemies.Contains(enemy))
+        {
+            activeEnemies.Remove(enemy);
+            totalEnemiesKilled++;
+            OnEnemiesCountChanged?.Invoke(activeEnemies.Count);
+            OnTotalKillsChanged?.Invoke(totalEnemiesKilled);
+            Debug.Log($"💀 Enemy died. Total: {activeEnemies.Count}/{currentMaxEnemies}, Kills: {totalEnemiesKilled}");
+        }
+    }
+
     private void NextWave()
     {
         currentWave++;

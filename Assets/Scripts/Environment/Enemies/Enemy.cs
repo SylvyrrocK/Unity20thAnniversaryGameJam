@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Pathfinding;
 using UnityEngine;
 using UpgradeSystem.Interfaces;
@@ -9,11 +8,12 @@ public class Enemy : MonoBehaviour, IDamageable, IDamageDealer
     [SerializeField] protected int damage = 1;
     [SerializeField] protected float moveSpeed = 1f;
     [SerializeField] private int graphIndex = 0;
-    
+
     [SerializeField] private float nextWaypointDistance = 0.1f;
     
-    [Header("Enemy Sprites")]
-    [SerializeField] private Sprite downSprite;
+    [Header("Enemy Sprites")] [SerializeField]
+    private Sprite downSprite;
+
     [SerializeField] private Sprite upSprite;
     [SerializeField] private Sprite leftSprite;
     [SerializeField] private Sprite rightSprite;
@@ -23,8 +23,13 @@ public class Enemy : MonoBehaviour, IDamageable, IDamageDealer
     private int currentWaypoint = 0;
     private bool reachedEndOfPath = false;
     private GridGraph gridGraph;
-    
+
     private SpriteRenderer spriteRenderer;
+
+    [Header("Drop Settings")]
+    [SerializeField] private GameObject[] possibleDrops;
+    [SerializeField] private float dropChance = 0.15f;
+    
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -33,10 +38,11 @@ public class Enemy : MonoBehaviour, IDamageable, IDamageDealer
         {
             seeker.graphMask = GraphMask.FromGraph(AstarPath.active.graphs[graphIndex]);
         }
+
         gridGraph = AstarPath.active.data.gridGraph;
         ConfigureGridForBomberman();
-        InvokeRepeating("UpdatePath", 0f, 0.3f);
-        
+        InvokeRepeating("UpdatePath", 0f, 1f);
+
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -44,11 +50,7 @@ public class Enemy : MonoBehaviour, IDamageable, IDamageDealer
     {
         if (gridGraph != null)
         {
-            // Размер ноды = размеру тайла
             gridGraph.nodeSize = 1f;
-            
-            // Обновляем граф
-            AstarPath.active.Scan();
         }
     }
 
@@ -70,10 +72,10 @@ public class Enemy : MonoBehaviour, IDamageable, IDamageDealer
     void Update()
     {
         if (path == null || currentWaypoint >= path.vectorPath.Count) return;
-        
+
         Vector2 targetPos = path.vectorPath[currentWaypoint];
         Vector2 direction = (targetPos - (Vector2)transform.position).normalized;
-        
+
         Vector2 axisDirection = GetAxisAlignedDirection(direction);
         transform.position += (Vector3)axisDirection * (moveSpeed * Time.deltaTime);
 
@@ -81,7 +83,7 @@ public class Enemy : MonoBehaviour, IDamageable, IDamageDealer
         {
             currentWaypoint++;
         }
-        
+
         UpdateSpriteDirection(direction);
     }
 
@@ -92,7 +94,7 @@ public class Enemy : MonoBehaviour, IDamageable, IDamageDealer
         else
             return new Vector2(0, Mathf.Sign(direction.y));
     }
-    
+
     public virtual void TakeDamage(int damage)
     {
         health -= damage;
@@ -101,14 +103,18 @@ public class Enemy : MonoBehaviour, IDamageable, IDamageDealer
 
     public virtual void ApplyDamage(IDamageable target)
     {
-        target.TakeDamage(damage);        
+        target.TakeDamage(damage);
     }
+
     protected virtual void Die()
     {
+        TryDropUpgrade();
+        GameManager.Instance?.OnEnemyDied(gameObject);
+        
         Destroy(gameObject);
     }
-    
-    void UpdateSpriteDirection(Vector2 direction)
+
+    private void UpdateSpriteDirection(Vector2 direction)
     {
         // Определяем основное направление по осям
         if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
@@ -127,5 +133,34 @@ public class Enemy : MonoBehaviour, IDamageable, IDamageDealer
             else
                 spriteRenderer.sprite = downSprite;
         }
+    }
+    
+    private void TryDropUpgrade()
+    {
+        if (Random.Range(0f, 1f) <= dropChance && possibleDrops.Length > 0)
+        {
+            DropRandomUpgrade();
+        }
+    }
+    
+    private void DropRandomUpgrade()
+    {
+        GameObject upgradeToDrop = GetRandomUpgrade();
+        if (upgradeToDrop != null)
+        {
+            Vector2 alignedPosition = GetGridPosition(transform.position);
+            Instantiate(upgradeToDrop, alignedPosition, Quaternion.identity);
+            Debug.Log($"🎁 Upgrade dropped: {upgradeToDrop.name}");
+        }
+    }
+    
+    private GameObject GetRandomUpgrade()
+    {
+        return possibleDrops[Random.Range(0, possibleDrops.Length)];
+    }
+    
+    private Vector2 GetGridPosition(Vector2 worldPosition)
+    {
+        return new Vector2(Mathf.Round(worldPosition.x), Mathf.Round(worldPosition.y));
     }
 }

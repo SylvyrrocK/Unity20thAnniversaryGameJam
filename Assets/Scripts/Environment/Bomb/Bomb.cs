@@ -81,7 +81,7 @@ public class Bomb : MonoBehaviour
     
     private void CreateExplosionLine(Vector2 direction)
     {
-        for (int i = 1; i <= _explosionRadius; i++)
+        for (int i = 1; i <= PlayerUpgradeManager.Instance.GetExplosionRange; i++)
         {
             Vector2 explosionPos = (Vector2)transform.position + direction * i;
             
@@ -98,7 +98,7 @@ public class Bomb : MonoBehaviour
     
     private ExplosionType GetExplosionTypeForPosition(int distance, Vector2 direction)
     {
-        if (distance == _explosionRadius)
+        if (distance == PlayerUpgradeManager.Instance.GetExplosionRange)
         {
             return ExplosionType.End;
         }
