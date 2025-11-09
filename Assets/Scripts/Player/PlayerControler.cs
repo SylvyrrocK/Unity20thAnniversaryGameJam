@@ -8,13 +8,13 @@ using UpgradeSystem.Interfaces;
 
 public class PlayerController : MonoBehaviour, IDamageable
 {
+    [Header("Player Settings")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private int maxHealth = 3;
     [SerializeField] private float invincibilityTimer = 2f;
 
-    [Header("Directional Sprites")] [SerializeField]
-    Sprite downSprite;
-
+    [Header("Directional Sprites")] 
+    [SerializeField] Sprite downSprite;
     [SerializeField] Sprite upSprite;
     [SerializeField] Sprite leftSprite;
     [SerializeField] Sprite rightSprite;
@@ -37,7 +37,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     Vector3 _originalScale;
     Vector3 _scaleTo;
 
-
+    [Header("Damage Sound Effects")]
+    [SerializeField] AudioClip[] damageSoundClips;
 
     [Header("UI Elements")]
     [SerializeField] Image[] hearts;
@@ -188,6 +189,8 @@ public class PlayerController : MonoBehaviour, IDamageable
             OnHealthChanged?.Invoke(_currentHealth);
 
             _isInvincible = true;
+
+            SoundFXManager.Instance.PlayRandomSoundFXClip(damageSoundClips, transform, 1f);
 
             transform.DOScale(_scaleTo, flashTimer + 0.1f)
                 .SetEase(Ease.InOutSine)
