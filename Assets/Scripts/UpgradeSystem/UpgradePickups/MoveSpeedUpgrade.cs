@@ -5,7 +5,7 @@ public class MoveSpeedUpgrade : MonoBehaviour, Pickup
 {
     public void OnPickup(PlayerController player)
     {
-        PlayerUpgradeManager.Instance.AddSpeedBoost(0.25f);
+        PlayerUpgradeManager.Instance.AddSpeedBoost(1f);
         Destroy(gameObject);
     }
 }

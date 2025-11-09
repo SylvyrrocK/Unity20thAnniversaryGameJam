@@ -9,6 +9,11 @@ public enum StatType
         SpeedBoost
     }
 
+    [Header("Damage Sound Effects")]
+    [SerializeField] AudioClip bombUpgradeClip;
+    [SerializeField] AudioClip rangeUpgradeClip;
+    [SerializeField] AudioClip speedUpgradeClip;
+
     private static PlayerUpgradeManager _instance;
     public static PlayerUpgradeManager Instance 
     {
@@ -34,7 +39,8 @@ public enum StatType
 
     public void AddBombCount()
     {
-        _bombCount++; 
+        _bombCount++;
+        SoundFXManager.Instance.PlaySoundFXClip(bombUpgradeClip, transform, 1f);
         OnPlayerUpgrade?.Invoke(StatType.BombCount, _bombCount);
         
     }
@@ -42,12 +48,14 @@ public enum StatType
     public void AddRange()
     {
         _explosionRange++;
+        SoundFXManager.Instance.PlaySoundFXClip(rangeUpgradeClip, transform, 1f);
         OnPlayerUpgrade?.Invoke(StatType.ExplosionRange, _explosionRange);
     }
 
     public void AddSpeedBoost(float factor)
     {
         _speedBoost += factor;
+        SoundFXManager.Instance.PlaySoundFXClip(speedUpgradeClip, transform, 1f);
         OnPlayerUpgrade?.Invoke(StatType.SpeedBoost, Mathf.RoundToInt(_speedBoost));
     } 
 }
