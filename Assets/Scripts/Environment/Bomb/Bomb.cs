@@ -1,6 +1,5 @@
 using System.Collections;
 using Environment.Bomb;
-using Pathfinding;
 using UnityEngine;
 
 public class Bomb : MonoBehaviour
@@ -20,13 +19,11 @@ public class Bomb : MonoBehaviour
     private int _explosionRadius;
     private int _damage;
     private bool _isInitialized = false;
-    private DynamicGridObstacle _dynamicGridObstacle;
-    private GraphUpdateObject guo;
-    
+
     private void Awake()
     {
         bombCollider = GetComponent<BoxCollider2D>();
-
+        
         if (!_isInitialized)
         {
             _explosionDelay = defaultExplosionDelay;
@@ -39,11 +36,6 @@ public class Bomb : MonoBehaviour
     private void Start()
     {
         bombCollider.isTrigger = true;
-        
-        Bounds bounds = GetComponent<Collider2D>().bounds;
-
-        AstarPath.active.UpdateGraphs(bounds);
-        
         StartCoroutine(ExplodeAfterDelay());
     }
     
@@ -78,7 +70,7 @@ public class Bomb : MonoBehaviour
         CreateExplosionLine(Vector2.up);
         Destroy(gameObject);
     }
-    
+
     private void CreateExplosionLine(Vector2 direction)
     {
         for (int i = 1; i <= _explosionRadius; i++)
@@ -118,7 +110,7 @@ public class Bomb : MonoBehaviour
     {
         Collider2D hit = Physics2D.OverlapCircle(position, 0.3f);
         
-        if (hit is not null)
+        if (hit != null)
         {
             return hit.CompareTag("Indestructible") || hit.CompareTag("Destructible");
         }
