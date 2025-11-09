@@ -108,6 +108,11 @@ MonoBehaviour:
   _sideSprite: {fileID: 8198113393017301390, guid: 6c2d8ec7a7aa6174d83d96227baffb83, type: 3}
   _endSprite: {fileID: -4716718432323189372, guid: d6f9666b8185d9140a112d8d291dd07f, type: 3}
   timeToLive: 1
+  showGizmos: 1
+  circleColor: {r: 1, g: 0, b: 0, a: 0.3}
+  hitColor: {r: 0, g: 1, b: 0, a: 0.5}
+  damageableColor: {r: 1, g: 1, b: 0, a: 0.7}
+  showHitInfo: 1
 --- !u!58 &6733338370578334029
 CircleCollider2D:
   m_ObjectHideFlags: 0

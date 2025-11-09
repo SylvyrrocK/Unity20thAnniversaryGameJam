@@ -78,8 +78,8 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -11, y: 9}
-      - {x: -11, y: -9}
-      - {x: 8, y: -9}
-      - {x: 8, y: 9}
+    - - {x: -8, y: 10}
+      - {x: -8, y: -10}
+      - {x: 13, y: -10}
+      - {x: 13, y: 10}
   m_UseDelaunayMesh: 0
