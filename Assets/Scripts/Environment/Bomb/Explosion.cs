@@ -34,7 +34,7 @@ public class Explosion : MonoBehaviour, IDamageDealer
         SetSprite(type);
         SetRotation(type, direction);
         _explosionDamage = damage;
-        
+
         ApplyDamageToSurroundings();
 
         _spriteRenderer.DOFade(0, timeToLive)
