@@ -18,28 +18,34 @@ public class Bomb : MonoBehaviour
     private float _explosionDelay;
     private int _explosionRadius;
     private int _damage;
+    private bool _isInitialized = false;
 
     private void Awake()
     {
         bombCollider = GetComponent<BoxCollider2D>();
+        
+        if (!_isInitialized)
+        {
+            _explosionDelay = defaultExplosionDelay;
+            _explosionRadius = defaultExplosionRadius;
+            _damage = defaultDamage;
+            _isInitialized = true;
+        }
     }
     
     private void Start()
     {
         bombCollider.isTrigger = true;
-        if (_explosionDelay == 0) 
-            Initialize(defaultExplosionDelay, defaultExplosionRadius, defaultDamage);
+        StartCoroutine(ExplodeAfterDelay());
     }
     
-    private void Initialize(float delay, int radius, int damage)
+    public void Initialize(float delay, int radius, int damage)
     {
         _explosionDelay = delay;
         _explosionRadius = radius;
         _damage = damage;
-        StartCoroutine(ExplodeAfterDelay());
+        _isInitialized = true;
     }
-
-    public void Initialize() => Initialize(defaultExplosionDelay, defaultExplosionRadius, defaultDamage);
     
     public void UpdateBombStats(int radius)
     {
