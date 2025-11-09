@@ -115,12 +115,9 @@ MonoBehaviour:
   leftSprite: {fileID: 1417432977261082702, guid: 25c7dc3499c651d4f8ee168740a26423, type: 3}
   rightSprite: {fileID: -6382267665641926659, guid: e143f5492c93c3b4b827d6608b4782cc, type: 3}
   possibleDrops:
-  - upgradePrefab: {fileID: 4104677570511050788, guid: 799e79ce3fd3a4f4d85435aac20bc149, type: 3}
-    dropWeight: 1
-  - upgradePrefab: {fileID: 2315238705421129889, guid: d12d8d9168c78984b8fd516dd3037d3e, type: 3}
-    dropWeight: 1
-  - upgradePrefab: {fileID: 7325512043526221147, guid: 49bebabdf7343e34dba55309ce86c449, type: 3}
-    dropWeight: 1
+  - {fileID: 2315238705421129889, guid: d12d8d9168c78984b8fd516dd3037d3e, type: 3}
+  - {fileID: 4104677570511050788, guid: 799e79ce3fd3a4f4d85435aac20bc149, type: 3}
+  - {fileID: 7325512043526221147, guid: 49bebabdf7343e34dba55309ce86c449, type: 3}
   dropChance: 0.15
 --- !u!114 &5928148058721344085
 MonoBehaviour:
