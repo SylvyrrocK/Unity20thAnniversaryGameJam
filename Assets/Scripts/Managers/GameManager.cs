@@ -8,11 +8,10 @@ public class GameManager : MonoBehaviour
     [Header("Spawn Settings")]
     [SerializeField] private GameObject portalPrefab;
     [SerializeField] private GameObject[] enemyPrefabs;
-    [SerializeField] private float spawnCheckRadius = 0.5f;
     [SerializeField] private LayerMask obstacleLayerMask;
     
     [Header("Wave Settings")]
-    [SerializeField] private int startMaxEnemies = 5;
+    [SerializeField] private int startMaxEnemies = 6;
     [SerializeField] private int enemiesIncreasePerWave = 1;
     [SerializeField] private float waveDuration = 30f;
     [SerializeField] private float portalSpawnDistance = 4f;
@@ -24,8 +23,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float maxDistanceFromPlayer = 6f;
     
     [Header("Game Area Settings")]
-    [SerializeField] private Vector2 gameAreaMin = new Vector2(-7.5f, -6.5f);
-    [SerializeField] private Vector2 gameAreaMax = new Vector2(7.5f, 6.5f);
+    [SerializeField] private int gridWidth = 15;
+    [SerializeField] private int gridHeight = 13;
+    
+    private int gameAreaMinX, gameAreaMaxX, gameAreaMinY, gameAreaMaxY;
     
     public static GameManager Instance { get; private set; }
     
@@ -62,6 +63,11 @@ public class GameManager : MonoBehaviour
     
     void Start()
     {
+        gameAreaMinX = -gridWidth / 2;
+        gameAreaMinY = -gridHeight / 2;
+        gameAreaMaxX = gridWidth / 2;
+        gameAreaMaxY = gridHeight / 2;
+        
         player = GameObject.FindGameObjectWithTag("Player").transform;
         currentMaxEnemies = startMaxEnemies;
         waveTimer = waveDuration;
@@ -167,17 +173,15 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < 20; i++) // 20 попыток найти позицию
         {
             Vector2 spawnPos = new Vector2(
-                Random.Range(gameAreaMin.x, gameAreaMax.x),
-                Random.Range(gameAreaMin.y, gameAreaMax.y)
+                Random.Range(gameAreaMinX, gameAreaMaxX + 1),
+                Random.Range(gameAreaMinY, gameAreaMaxY + 1)
             );
             
-            Vector2 gridPos = new Vector2(Mathf.Round(spawnPos.x), Mathf.Round(spawnPos.y));
-            
-            if (IsPositionFree(gridPos) && 
-                !IsTooCloseToOtherPortal(gridPos) &&
-                IsInsideGameArea(gridPos))
+            if (IsPositionFree(spawnPos) && 
+                !IsTooCloseToOtherPortal(spawnPos) &&
+                Vector2.Distance(spawnPos, player.position) >= minDistanceFromPlayer)
             {
-                return gridPos;
+                return spawnPos;
             }
         }
         
@@ -189,17 +193,18 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < 20; i++)
         {
             Vector2 spawnPos = new Vector2(
-                Random.Range(gameAreaMin.x, gameAreaMax.x),
-                Random.Range(gameAreaMin.y, gameAreaMax.y)
+                Random.Range(gameAreaMinX, gameAreaMaxX + 1),
+                Random.Range(gameAreaMinY, gameAreaMaxY + 1)
             );
-            
-            Vector2 gridPos = new Vector2(Mathf.Round(spawnPos.x), Mathf.Round(spawnPos.y));
-            
-            if (IsPositionFree(gridPos) && 
-                Vector2.Distance(gridPos, player.position) > 3f &&
-                IsInsideGameArea(gridPos))
+        
+            if (IsPositionFree(spawnPos) && 
+                Vector2.Distance(spawnPos, player.position) > 3f)
             {
-                return gridPos;
+                return spawnPos;
+            }
+            else
+            {
+                Debug.Log("Attempt" + i + "busy - " + spawnPos);
             }
         }
         
@@ -208,8 +213,8 @@ public class GameManager : MonoBehaviour
     
     private bool IsInsideGameArea(Vector2 position)
     {
-        return position.x >= gameAreaMin.x && position.x <= gameAreaMax.x &&
-               position.y >= gameAreaMin.y && position.y <= gameAreaMax.y;
+        return position.x >= gameAreaMinX && position.x <= gameAreaMaxX &&
+               position.y >= gameAreaMinY && position.y <= gameAreaMaxY;
     }
     
     private void SpawnEnemy(Vector2 position)
@@ -230,7 +235,7 @@ public class GameManager : MonoBehaviour
             return false;
         }
         
-        Collider2D hit = Physics2D.OverlapCircle(position, spawnCheckRadius, obstacleLayerMask);
+        Collider2D hit = Physics2D.OverlapPoint(position, obstacleLayerMask);
         return hit is null;
     }
     

@@ -17,6 +17,8 @@ public class Portal : MonoBehaviour
 
     void Start()
     {
+        spawnTimer = spawnInterval;
+        
         Invoke("ClosePortal", lifetime);
     }
     void Update()
@@ -27,12 +29,18 @@ public class Portal : MonoBehaviour
         
         if (spawnTimer <= 0)
         {
-            if (GameManager.Instance.GetCurrentEnemies() < GameManager.Instance.GetMaxEnemies())
+            if (CanSpawnEnemy())
             {
                 SpawnEnemy();
             }
             spawnTimer = spawnInterval;
         }
+    }
+
+    bool CanSpawnEnemy()
+    {
+        return GameManager.Instance != null && 
+               GameManager.Instance.GetCurrentEnemies() < GameManager.Instance.GetMaxEnemies();
     }
 
     public void ClosePortal()
@@ -59,6 +67,7 @@ public class Portal : MonoBehaviour
         float closeTime = GetCurrentAnimationLength();
         
         yield return new WaitForSeconds(closeTime);
+        yield return new WaitForEndOfFrame();
         
         Destroy(gameObject);
     }
