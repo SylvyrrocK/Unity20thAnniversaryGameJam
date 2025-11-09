@@ -8304,6 +8304,11 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!60 &536230054 stripped
+PolygonCollider2D:
+  m_CorrespondingSourceObject: {fileID: 3281062820681590348, guid: 17a90d5488b5f024a8615b532685bef8, type: 3}
+  m_PrefabInstance: {fileID: 834139044}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &539505563
 GameObject:
   m_ObjectHideFlags: 0
@@ -14132,6 +14137,26 @@ PrefabInstance:
     - target: {fileID: 467648969495477257, guid: 17a90d5488b5f024a8615b532685bef8, type: 3}
       propertyPath: m_Name
       value: CameraBounds
+      objectReference: {fileID: 0}
+    - target: {fileID: 3281062820681590348, guid: 17a90d5488b5f024a8615b532685bef8, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].y
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3281062820681590348, guid: 17a90d5488b5f024a8615b532685bef8, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].y
+      value: -9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3281062820681590348, guid: 17a90d5488b5f024a8615b532685bef8, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].y
+      value: -9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3281062820681590348, guid: 17a90d5488b5f024a8615b532685bef8, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].x
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3281062820681590348, guid: 17a90d5488b5f024a8615b532685bef8, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].y
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 7035285918751315569, guid: 17a90d5488b5f024a8615b532685bef8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -23991,6 +24016,10 @@ PrefabInstance:
       propertyPath: Target.TrackingTarget
       value: 
       objectReference: {fileID: 1694426864}
+    - target: {fileID: 3815896319895401039, guid: 4442fba80fa1a434f8e9c8a0d0a42941, type: 3}
+      propertyPath: BoundingShape2D
+      value: 
+      objectReference: {fileID: 536230054}
     - target: {fileID: 3984300940372925247, guid: 4442fba80fa1a434f8e9c8a0d0a42941, type: 3}
       propertyPath: m_Name
       value: PlayerCamera
@@ -27048,10 +27077,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5890712480392030045, guid: cd60b4671034faf4ba07199b02fdaf5e, type: 3}
-      propertyPath: m_ScaleFactor
-      value: 1.5
-      objectReference: {fileID: 0}
     - target: {fileID: 8635376877107821975, guid: cd60b4671034faf4ba07199b02fdaf5e, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -31867,11 +31892,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4183776619335188702, guid: e9cba298f34251b41bf3b09d2d8aab8a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.1085048
+      value: -0.82954866
       objectReference: {fileID: 0}
     - target: {fileID: 4183776619335188702, guid: e9cba298f34251b41bf3b09d2d8aab8a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.13238242
+      value: -0.13238
       objectReference: {fileID: 0}
     - target: {fileID: 4183776619335188702, guid: e9cba298f34251b41bf3b09d2d8aab8a, type: 3}
       propertyPath: m_LocalPosition.z
