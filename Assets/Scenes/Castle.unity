@@ -21854,6 +21854,10 @@ PrefabInstance:
       propertyPath: 'hearts.Array.data[5]'
       value: 
       objectReference: {fileID: 1004100373}
+    - target: {fileID: 575851792227296592, guid: 2451cf095d209c14d9103d6f174a2bcb, type: 3}
+      propertyPath: damageSoundClips.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1853703119855379262, guid: 2451cf095d209c14d9103d6f174a2bcb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -36453,6 +36457,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: MusicManager
       objectReference: {fileID: 0}
+    - target: {fileID: 6106672593177111846, guid: 437280f3e07be8741a333dff0a73a8b6, type: 3}
+      propertyPath: m_Volume
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 6106672593177111846, guid: 437280f3e07be8741a333dff0a73a8b6, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: 8f9ce1449ed147a47a94a82755db4b13, type: 3}
     - target: {fileID: 6427826798654716328, guid: 437280f3e07be8741a333dff0a73a8b6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.66539
