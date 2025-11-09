@@ -149,7 +149,6 @@ MonoBehaviour:
     m_Bits: 64
   damageSoundClips:
   - {fileID: 8300000, guid: ca9a5536c59aa034c9e7e5e3219c6577, type: 3}
-  - {fileID: 8300000, guid: ce77b133aad832f4cbc025ef29aac944, type: 3}
   hearts:
   - {fileID: 0}
   - {fileID: 0}
@@ -305,6 +304,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 720d4b40892b6a24aae6b2e808040c5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerUpgradeManager
+  bombUpgradeClip: {fileID: 8300000, guid: 4f95ab2c76176bf4ca495fad4accd0c9, type: 3}
+  speedUpgradeClip: {fileID: 8300000, guid: 0cb925dbaf3289e4788541d7a26721c6, type: 3}
+  rangeUpgradeClip: {fileID: 8300000, guid: 965c2b36399d9c94bb65ef454da7dfe5, type: 3}
 --- !u!114 &8965807515307889793
 MonoBehaviour:
   m_ObjectHideFlags: 0
