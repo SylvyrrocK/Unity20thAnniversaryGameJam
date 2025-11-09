@@ -157,7 +157,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private Vector2 GetGridPosition(Vector2 worldPosition)
     {
-        return new Vector2(Mathf.Round(worldPosition.x), Mathf.Round(worldPosition.y));
+        return new Vector2(Mathf.Round(worldPosition.x) - 0.5f, Mathf.Round(worldPosition.y) - 0.5f);
     }
 
     private void PlaceBomb(Vector2 position)
