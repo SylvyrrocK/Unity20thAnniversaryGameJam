@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private int maxHealth = 3;
+    [SerializeField] private float invincibilityTimer = 2f;
 
     [Header("Directional Sprites")] [SerializeField]
     Sprite downSprite;
@@ -21,10 +22,22 @@ public class PlayerController : MonoBehaviour, IDamageable
     [Header("Bomb Settings")] [SerializeField]
     private GameObject bombPrefab;
     
+    [SerializeField] private int maxBombs = 1;
     [SerializeField] private LayerMask obstacleLayerMask;
 
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D playerRb;
+
+    [Header("Damage indicator")]
+    Color _originalColor;
+    float flashTimer = 2f;
+    float intensity = 5f;
+    float duration = 0.5f;
+
+    Vector3 _originalScale;
+    Vector3 _scaleTo;
+
+
 
     [Header("UI Elements")]
     [SerializeField] Image[] hearts;
@@ -50,13 +63,18 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         _currentHealth = maxHealth;
         _currentBombs = 0;
-        OnBombCountChanged?.Invoke(_currentBombs, PlayerUpgradeManager.Instance.GetBombCount);
+        OnBombCountChanged?.Invoke(_currentBombs, maxBombs);
     }
 
     void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         playerRb = GetComponent<Rigidbody2D>();
+
+
+        _originalColor = spriteRenderer.material.color;
+        _originalScale = transform.localScale;
+        _scaleTo = _originalScale * 0.8f;
     }
 
     private void OnDestroy()
@@ -118,7 +136,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void OnPlaceBomb(InputAction.CallbackContext context)
     {
-        if (context.performed && _canPlaceBomb && _currentBombs < PlayerUpgradeManager.Instance.GetBombCount)
+        if (context.performed && _canPlaceBomb && _currentBombs < maxBombs)
         {
             TryPlaceBomb();
         }
@@ -139,22 +157,21 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private Vector2 GetGridPosition(Vector2 worldPosition)
     {
-        return new Vector2(Mathf.Round(worldPosition.x) - 0.5f, Mathf.Round(worldPosition.y) - 0.5f);
+        return new Vector2(Mathf.Round(worldPosition.x), Mathf.Round(worldPosition.y));
     }
 
     private void PlaceBomb(Vector2 position)
     {
         GameObject bombObj = Instantiate(bombPrefab, position, Quaternion.identity);
         Bomb bomb = bombObj.GetComponent<Bomb>();
-        bomb.UpdateBombStats(PlayerUpgradeManager.Instance.GetExplosionRange);
-        
+    
         bomb.OnExploded += (explodedBomb) => {
             _currentBombs--;
-            OnBombCountChanged?.Invoke(_currentBombs, PlayerUpgradeManager.Instance.GetBombCount);
+            OnBombCountChanged?.Invoke(_currentBombs, maxBombs);
         };
     
         _currentBombs++;
-        OnBombCountChanged?.Invoke(_currentBombs, PlayerUpgradeManager.Instance.GetBombCount);
+        OnBombCountChanged?.Invoke(_currentBombs, maxBombs);
     }
 
     private bool IsPositionClear(Vector2 position)
@@ -169,6 +186,26 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             _currentHealth -= damage;
             OnHealthChanged?.Invoke(_currentHealth);
+
+            _isInvincible = true;
+
+            transform.DOScale(_scaleTo, flashTimer + 0.1f)
+                .SetEase(Ease.InOutSine)
+                .SetLoops(2, LoopType.Yoyo)
+                .OnComplete(() => transform.localScale = _originalScale);
+
+            spriteRenderer.DOColor(Color.red, flashTimer / 4f + 0.1f)
+                    .SetLoops(4, LoopType.Yoyo)
+                    .OnComplete(() => spriteRenderer.color = _originalColor);
+
+            if (CameraShake.Instance != null)
+                CameraShake.Instance.Shake(intensity, duration);
+
+            DOVirtual.DelayedCall(invincibilityTimer, () => {
+                _isInvincible = false;
+
+                Debug.Log("This runs after: " + invincibilityTimer + " seconds!");
+            });
 
             if (_currentHealth <= 0)
             {
@@ -188,7 +225,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         if (collision.TryGetComponent<Pickup>(out var pickup))
         {
-            Debug.Log("Picked up pickup");
             pickup.OnPickup(this);
         }
         else if (collision.TryGetComponent<IDamageDealer>(out var damager))
