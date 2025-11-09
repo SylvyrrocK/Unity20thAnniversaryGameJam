@@ -81,7 +81,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 4603267717404459454, guid: c6ae6663c1a477846981b14b510e4e8b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -114,6 +114,14 @@ MonoBehaviour:
   upSprite: {fileID: -3169041082199477710, guid: 32432ee5d24dce6418616c995dfe3956, type: 3}
   leftSprite: {fileID: 8491533563101825437, guid: 4ca33ffb009d100479a636120084681b, type: 3}
   rightSprite: {fileID: -8627081929656223398, guid: cc1cc17e0ac7ec348ab311be9ba6415e, type: 3}
+  possibleDrops:
+  - upgradePrefab: {fileID: 4104677570511050788, guid: 799e79ce3fd3a4f4d85435aac20bc149, type: 3}
+    dropWeight: 1
+  - upgradePrefab: {fileID: 2315238705421129889, guid: d12d8d9168c78984b8fd516dd3037d3e, type: 3}
+    dropWeight: 1
+  - upgradePrefab: {fileID: 7325512043526221147, guid: 49bebabdf7343e34dba55309ce86c449, type: 3}
+    dropWeight: 1
+  dropChance: 0.15
 --- !u!114 &6928156960538630833
 MonoBehaviour:
   m_ObjectHideFlags: 0

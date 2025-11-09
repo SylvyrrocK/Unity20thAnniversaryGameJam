@@ -81,7 +81,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: -177402468537687285, guid: 037a73eb3af0c084bb9de90e1585d523, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -105,17 +105,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b32572f9ee528f246bd49dcb7e7673ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  health: 1
+  health: 3
   damage: 1
   moveSpeed: 1
-  obstacleLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
+  graphIndex: 0
   nextWaypointDistance: 0.1
   downSprite: {fileID: -177402468537687285, guid: 037a73eb3af0c084bb9de90e1585d523, type: 3}
   upSprite: {fileID: -6957862245961312629, guid: 9bfe61d20e893c444b038ac2d58255c2, type: 3}
   leftSprite: {fileID: 2178139671284833340, guid: 46f03342ba825054cba80b72957c2884, type: 3}
   rightSprite: {fileID: -6860565227959742378, guid: 18444ad2dc58d86408d29e3d2a5b2867, type: 3}
+  possibleDrops:
+  - upgradePrefab: {fileID: 4104677570511050788, guid: 799e79ce3fd3a4f4d85435aac20bc149, type: 3}
+    dropWeight: 1
+  - upgradePrefab: {fileID: 2315238705421129889, guid: d12d8d9168c78984b8fd516dd3037d3e, type: 3}
+    dropWeight: 1
+  - upgradePrefab: {fileID: 7325512043526221147, guid: 49bebabdf7343e34dba55309ce86c449, type: 3}
+    dropWeight: 1
+  dropChance: 0.15
 --- !u!114 &7182117248679608018
 MonoBehaviour:
   m_ObjectHideFlags: 0
