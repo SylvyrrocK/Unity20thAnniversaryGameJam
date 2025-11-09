@@ -127,7 +127,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     private void TryPlaceBomb()
     {
         Vector2 bombPosition = GetGridPosition(transform.position);
-
+        Debug.Log($"Player: {transform.position}, Bomb: {bombPosition}");
+        
         if (!IsPositionClear(bombPosition))
         {
             Debug.Log("Cannot place bomb - position occupied");
@@ -139,7 +140,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private Vector2 GetGridPosition(Vector2 worldPosition)
     {
-        return new Vector2(Mathf.Round(worldPosition.x) - 0.5f, Mathf.Round(worldPosition.y) - 0.5f);
+        return new Vector2(Mathf.Round(worldPosition.x), Mathf.Round(worldPosition.y));
     }
 
     private void PlaceBomb(Vector2 position)
