@@ -2,6 +2,13 @@ using UnityEngine;
 
 public class PlayerUpgradeManager : MonoBehaviour
 {
+public enum StatType
+    {
+        BombCount,
+        ExplosionRange,
+        SpeedBoost
+    }
+
     private static PlayerUpgradeManager _instance;
     public static PlayerUpgradeManager Instance 
     {
@@ -15,7 +22,7 @@ public class PlayerUpgradeManager : MonoBehaviour
         }
     }
     
-    public event System.Action<int> OnPlayerUpgrade;
+    public event System.Action<StatType, int> OnPlayerUpgrade;
     
     private int _bombCount = 1;
     private int _explosionRange = 1;
@@ -28,19 +35,19 @@ public class PlayerUpgradeManager : MonoBehaviour
     public void AddBombCount()
     {
         _bombCount++; 
-        OnPlayerUpgrade?.Invoke(_bombCount);
+        OnPlayerUpgrade?.Invoke(StatType.BombCount, _bombCount);
         
     }
 
     public void AddRange()
     {
         _explosionRange++;
-        OnPlayerUpgrade?.Invoke(_explosionRange);
+        OnPlayerUpgrade?.Invoke(StatType.ExplosionRange, _explosionRange);
     }
 
     public void AddSpeedBoost(float factor)
     {
         _speedBoost += factor;
-        OnPlayerUpgrade?.Invoke(_explosionRange);
+        OnPlayerUpgrade?.Invoke(StatType.SpeedBoost, Mathf.RoundToInt(_speedBoost));
     } 
 }
