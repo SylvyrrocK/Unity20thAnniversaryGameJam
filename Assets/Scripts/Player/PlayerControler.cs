@@ -60,6 +60,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     public event System.Action OnPlayerDeath;
     public event System.Action<int, int> OnBombCountChanged; //current, max
 
+    [SerializeField] SoundMenuController soundmenuController;
+
     void Start()
     {
         _currentHealth = maxHealth;
@@ -220,6 +222,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void Die()
     {
+        soundmenuController.RestartScene();
         OnPlayerDeath?.Invoke();
         gameObject.SetActive(false);
     }

@@ -33,6 +33,11 @@ public class SoundMenuController : MonoBehaviour
         ToggleSoundMenu();
     }
 
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+
     void ToggleSoundMenu()
     {
         isSoundMenuOpen = !isSoundMenuOpen;
